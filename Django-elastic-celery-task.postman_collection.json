@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "816432fd-0a04-4dff-9491-cda00eb020f4",
+		"name": "Django-elastic-celery-task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34945039"
+	},
+	"item": [
+		{
+			"name": "insert product in DB and ES",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "amazon basics Height Adjustable 5-Shelves Heavy Duty Rack - Black Chrome Finish (Steel)",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "- 5-shelf shelving unit for your kitchen, office, garage, and more\n- Each shelf holds up to 350 pounds (evenly distributed); total max load weight is 1750 pounds\n- Wire shelves adjustable in 1-inch increments; no tools required\n- Durable steel construction with black-coated chrome finish; adjustable leveling feet",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "3279",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "12",
+							"type": "text"
+						},
+						{
+							"key": "size",
+							"value": "36 x 14 x 72 inches (LxWxH)",
+							"type": "text"
+						},
+						{
+							"key": "color",
+							"value": "silver",
+							"type": "text"
+						},
+						{
+							"key": "capacity",
+							"value": "1750 pounds",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"type": "file",
+							"src": [
+								"postman-cloud:///1ef440e7-ff6b-4400-a995-c50f556c03bc",
+								"postman-cloud:///1ef440e8-000e-4d30-9407-e851c8c44e1e",
+								"postman-cloud:///1ef440e8-630f-4100-a8d6-f940d83dce5b"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list of products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update prod in DB & ES",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "update amazon basics Height Adjustable 5-Shelves Heavy Duty Rack - Black Chrome Finish (Steel)",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "update - 5-shelf shelving unit for your kitchen, office, garage, and more\n- Each shelf holds up to 350 pounds (evenly distributed); total max load weight is 1750 pounds\n- Wire shelves adjustable in 1-inch increments; no tools required\n- Durable steel construction with black-coated chrome finish; adjustable leveling feet",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "3400",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/product/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"product",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete prod in DB & ES",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/product/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"product",
+						"1"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "1750kjhkjdahfjdas",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Searchable data in ES",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/product/?q=office",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"product",
+						""
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "office"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

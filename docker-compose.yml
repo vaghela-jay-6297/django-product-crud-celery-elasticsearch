@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13
+    container_name: pgcontainer
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    
+  web:
+    build: .
+    container_name: django
+    entrypoint: ["/app/entrypoint.sh"]
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+  
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: elasticsearch
+    environment:
+      - ELASTICSEARCH_USERNAME = ${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD = ${ELASTICSEARCH_PASSWORD}
+      - VERIFY_CERTS = ${VERIFY_CERTS}
+      - node.name=elasticsearch
+      - cluster.name=docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+    
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5602:5601"
+    depends_on:
+      - elasticsearch
+      
+  celery:
+    build: .
+    command: celery -A DRF_elastic_celery_pro worker -l info
+    container_name: celery
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+
+volumes:
+  postgres_data:
+  django_data:
+  es_data:
+     driver: local
+  
